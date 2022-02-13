@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppResolver } from './app.resolver';
+import { Office } from './office/office.entity';
 import { OfficeModule } from './office/office.module';
 
 @Module({
@@ -12,7 +13,7 @@ import { OfficeModule } from './office/office.module';
       url: 'mongodb://localhost/office',
       synchronize: true,
       useUnifiedTopology: true,
-      entities: [],
+      entities: [Office],
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
