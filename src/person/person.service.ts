@@ -36,4 +36,14 @@ export class PersonService {
   async getAllPersons(): Promise<Person[]> {
     return await this.personRepository.find();
   }
+
+  async getManyPersons(personIds: string[]): Promise<Person[]> {
+    return this.personRepository.find({
+      where: {
+        id: {
+          $in: personIds,
+        },
+      },
+    });
+  }
 }

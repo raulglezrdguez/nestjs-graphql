@@ -13,12 +13,13 @@ export class OfficeService {
   ) {}
 
   async createOffice(createOfficeInput: CreateOfficeInput): Promise<Office> {
-    const { name, startDate, endDate } = createOfficeInput;
+    const { name, startDate, endDate, persons } = createOfficeInput;
     let office = this.officeRepository.create({
       id: uuid(),
       name,
       startDate,
       endDate,
+      persons,
     });
     office = await this.officeRepository.save(office);
 
@@ -35,5 +36,14 @@ export class OfficeService {
 
   async getAllOffices(): Promise<Office[]> {
     return await this.officeRepository.find();
+  }
+
+  async assignPersonsToOffice(
+    officeId: string,
+    personIds: string[],
+  ): Promise<Office> {
+    const office = await this.getOffice(officeId);
+    office.persons = [...office.persons, ...personIds];
+    return await this.officeRepository.save(office);
   }
 }

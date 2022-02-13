@@ -16,4 +16,7 @@ export class Office {
 
   @Column()
   endDate: string;
+
+  @Column()
+  persons: string[];
 }
