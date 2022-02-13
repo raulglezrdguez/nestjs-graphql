@@ -1,28 +1,26 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { Office } from './office.entity';
+import { CreateOfficeInput } from './office.input';
 import { OfficeService } from './office.service';
 import { OfficeType } from './office.type';
 
 @Resolver((of) => OfficeType)
 export class OfficeResolver {
-  constructor(private readonly officeService: OfficeService) {}
+  constructor(private officeService: OfficeService) {}
 
   @Query((returns) => OfficeType)
-  office() {
-    return {
-      id: 'fs',
-      name: 'testing',
-      startDate: new Date().toISOString(),
-      endDate: new Date().toISOString(),
-    };
+  office(@Args('id') id: string) {
+    return this.officeService.getOffice(id);
+  }
+
+  @Query((returns) => [OfficeType])
+  getOffices() {
+    return this.officeService.getAllOffices();
   }
 
   @Mutation((returns) => OfficeType)
   createOffice(
-    @Args('name') name: string,
-    @Args('startDate') startDate: string,
-    @Args('endDate') endDate: string,
+    @Args('createOfficeInput') createOfficeInput: CreateOfficeInput,
   ) {
-    return this.officeService.createOffice(name, startDate, endDate);
+    return this.officeService.createOffice(createOfficeInput);
   }
 }
